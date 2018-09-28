@@ -9,6 +9,6 @@
 </head>
 <body>
 <%@include file="header.jsp" %>
-<h3>Your account Balance is${balance}</h3>
+<h3>Your account Balance is ${balance}</h3>
 </body>
 </html>

@@ -12,11 +12,11 @@
 
 <%@include file="header.jsp"%>
 	<%-- <c:if test="${sessionScope.customer.customerId != null}"> --%>
-		<h3>${sessionScope.customer.customerId}</h3>
-		<h3>${sessionScope.customer.customerName}</h3>
-		<h3>${sessionScope.customer.email}</h3>
-		<h3>${sessionScope.customer.account.balance}</h3>
-		<h3>${sessionScope.customer.address}</h3>
+		<h3>Customer Id: ${sessionScope.customer.customerId}</h3>
+		<h3>Customer Name: ${sessionScope.customer.customerName}</h3>
+		<h3>Customer email: ${sessionScope.customer.email}</h3>
+		<h3>Account Balance: ${sessionScope.customer.account.balance}</h3>
+		<h3>Address: ${sessionScope.customer.address}</h3>
 	
 	<c:if test="${sessionScope.customer.customerId == null}">
 

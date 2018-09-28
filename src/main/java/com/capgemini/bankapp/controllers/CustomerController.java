@@ -31,7 +31,7 @@ public class CustomerController {
 			HttpServletRequest request) {
 		Customer cust = customerService
 				.authenticate(new Customer(customerId, null, password, null, null, LocalDate.now(), null));
-		//System.out.println("dhsadhkashdj   " + cust);
+
 		session = request.getSession();
 		session.setAttribute("customer", cust);
 		return "index";
@@ -61,24 +61,25 @@ public class CustomerController {
 
 		return "editSuccess";
 	}
-	@RequestMapping(value="/changePasswordPage",method= RequestMethod.GET)
-	public String changePasswordPage()
-	{
+
+	@RequestMapping(value = "/changePasswordPage", method = RequestMethod.GET)
+	public String changePasswordPage() {
 		return "changePassword";
 	}
-	
-	@RequestMapping(value="/changePassword",method= RequestMethod.POST)
-	public String changePassword(Model model,HttpSession session,HttpServletRequest request,@RequestParam String oldPassword,@RequestParam String newPassword,@RequestParam String confirmPassword) {
-		Customer customer=(Customer) session.getAttribute("customer");
+
+	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+	public String changePassword(Model model, HttpSession session, HttpServletRequest request,
+			@RequestParam String oldPassword, @RequestParam String newPassword, @RequestParam String confirmPassword) {
+		Customer customer = (Customer) session.getAttribute("customer");
 		customerService.updatePassword(customer, oldPassword, newPassword);
 		session.setAttribute("customer", customer);
 		request.setAttribute("success", true);
 		return "success";
-		
+
 	}
-	@RequestMapping(value="/logout",method= RequestMethod.GET)
-	public String getlogoutPage(HttpSession session)
-	{
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String getlogoutPage(HttpSession session) {
 		session.invalidate();
 		return "index";
 	}

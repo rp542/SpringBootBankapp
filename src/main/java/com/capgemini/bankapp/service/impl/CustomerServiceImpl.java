@@ -26,6 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		return customerRepository.updateProfile(customer);
 	}
+
 	@Override
 	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) {
 
