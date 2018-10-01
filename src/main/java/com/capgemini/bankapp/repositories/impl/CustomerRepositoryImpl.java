@@ -60,8 +60,10 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	}
 
 	@Override
-	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) {
-		int count = jdbcTemplate.update("update customers set customer_password=? where customer_id=?",
+	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) throws DataAccessException{
+		try{
+			int count = jdbcTemplate.update("update customers set customer_password=? where customer_id=?",
+		
 				new Object[] { newPassword, customer.getCustomerId() });
 		if (count != 0) {
 			return true;
@@ -69,7 +71,11 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 			return false;
 		}
 	}
-
+		catch (DataAccessException e) {
+			e.initCause(new EmptyResultDataAccessException(1));
+			throw e;
+		}
+	}
 	class CustomerRowMapper implements RowMapper<Customer> {
 		@Override
 		public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {

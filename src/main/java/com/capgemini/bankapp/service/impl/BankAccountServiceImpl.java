@@ -3,6 +3,7 @@ package com.capgemini.bankapp.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.bankapp.exceptions.LowBalanceException;
 import com.capgemini.bankapp.repositories.BankAccountRepository;
 import com.capgemini.bankapp.service.BankAccountService;
 
@@ -18,7 +19,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 	}
 
 	@Override
-	public double withdraw(long accountId, double amount) {
+	public double withdraw(long accountId, double amount) throws LowBalanceException{
 		double balance = bankAccountRepository.getBalance(accountId);
 		if (balance != -1) {
 			if (balance - amount >= 0) {
@@ -26,7 +27,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 				return bankAccountRepository.getBalance(accountId);
 			}
 		}
-		return balance;
+		throw new LowBalanceException("Balance is low to make transaction");
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 	}
 
 	@Override
-	public boolean fundTransfer(long fromAcc, long toAcc, double amount) {
+	public boolean fundTransfer(long fromAcc, long toAcc, double amount)  {
 		double balance = withdraw(fromAcc, amount);
 		if (balance != -1) {
 			if (deposit(toAcc, amount) == -1) {

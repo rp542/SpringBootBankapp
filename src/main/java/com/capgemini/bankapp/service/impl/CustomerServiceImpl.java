@@ -2,10 +2,10 @@ package com.capgemini.bankapp.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.bankapp.entities.Customer;
+import com.capgemini.bankapp.exceptions.ChangePasswordFailedException;
 import com.capgemini.bankapp.exceptions.UserNotFoundException;
 import com.capgemini.bankapp.repositories.CustomerRepository;
 import com.capgemini.bankapp.service.CustomerService;
@@ -35,8 +35,15 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) {
+		try {
+			return customerRepository.updatePassword(customer, oldPassword, newPassword);
+		}
 
-		return customerRepository.updatePassword(customer, oldPassword, newPassword);
+		catch (DataAccessException e) {
+			ChangePasswordFailedException changePasswordFailedException = new ChangePasswordFailedException(
+					"Password Change unsuccessfull");
+			changePasswordFailedException.initCause(e);
+			throw e;
+		}
 	}
-
 }

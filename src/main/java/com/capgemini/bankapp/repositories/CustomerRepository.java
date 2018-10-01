@@ -7,8 +7,8 @@ import com.capgemini.bankapp.entities.Customer;
 public interface CustomerRepository {
 	public Customer authenticate(Customer customer) throws DataAccessException;
 
-	public Customer updateProfile(Customer customer);
+	public Customer updateProfile(Customer customer) throws DataAccessException;
 
-	public boolean updatePassword(Customer customer, String oldPassword, String newPassword);
+	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) throws DataAccessException;
 
 }
