@@ -60,18 +60,14 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	}
 
 	@Override
-	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) throws DataAccessException{
-		try{
-			int count = jdbcTemplate.update("update customers set customer_password=? where customer_id=?",
-		
-				new Object[] { newPassword, customer.getCustomerId() });
-		if (count != 0) {
+	public boolean updatePassword(Customer customer, String oldPassword, String newPassword)
+			throws DataAccessException {
+		try {
+			int i=jdbcTemplate.update("UPDATE customers SET customer_password=? WHERE customer_id=? AND customer_password=?",
+					new Object[] { newPassword, customer.getCustomerId(), customer.getPassword() });
 			return true;
-		} else {
-			return false;
-		}
-	}
-		catch (DataAccessException e) {
+
+		} catch (DataAccessException e) {
 			e.initCause(new EmptyResultDataAccessException(1));
 			throw e;
 		}

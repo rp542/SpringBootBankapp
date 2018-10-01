@@ -81,6 +81,6 @@ public class CustomerController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String getlogoutPage(HttpSession session) {
 		session.invalidate();
-		return "index";
+		return "header";
 	}
 }

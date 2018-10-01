@@ -34,16 +34,16 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) {
+	public boolean updatePassword(Customer customer, String oldPassword, String newPassword)
+			throws ChangePasswordFailedException {
 		try {
 			return customerRepository.updatePassword(customer, oldPassword, newPassword);
-		}
-
-		catch (DataAccessException e) {
-			ChangePasswordFailedException changePasswordFailedException = new ChangePasswordFailedException(
-					"Password Change unsuccessfull");
-			changePasswordFailedException.initCause(e);
+		} catch (DataAccessException e) {
+			ChangePasswordFailedException passwordChangeFailedException = new ChangePasswordFailedException(
+					"Failed to change the password");
+			passwordChangeFailedException.initCause(e);
 			throw e;
 		}
+
 	}
 }
