@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -18,14 +20,21 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public Customer authenticate(Customer customer) {
+	public Customer authenticate(Customer customer) throws DataAccessException{
+		try {
+			Customer customer2 = jdbcTemplate.queryForObject(
+					"select * from customers inner join bankaccount on bankaccount.customer_id=customers.customer_id where customers.customer_id=? and customers.customer_password=?",
+					new Object[] { customer.getCustomerId(), customer.getPassword() }, new CustomerRowMapper());
 
-		Customer customer2 = jdbcTemplate.queryForObject(
-				"select * from customers inner join bankaccount on bankaccount.customer_id=customers.customer_id where customers.customer_id=? and customers.customer_password=?",
-				new Object[] { customer.getCustomerId(), customer.getPassword() }, new CustomerRowMapper());
+			return customer2;
+		}
 
-		System.out.println("Repositorty   " + customer2);
-		return customer2;
+		catch (DataAccessException e) {
+
+			e.initCause(new EmptyResultDataAccessException("Expected 1 actual 0 ", 1));
+
+			throw e;
+		}
 
 	}
 

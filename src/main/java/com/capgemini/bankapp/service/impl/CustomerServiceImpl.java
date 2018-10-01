@@ -1,11 +1,13 @@
 package com.capgemini.bankapp.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.bankapp.entities.Customer;
+import com.capgemini.bankapp.exceptions.UserNotFoundException;
 import com.capgemini.bankapp.repositories.CustomerRepository;
-import com.capgemini.bankapp.repositories.impl.CustomerRepositoryImpl;
 import com.capgemini.bankapp.service.CustomerService;
 
 @Service
@@ -15,10 +17,14 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerRepository customerRepository;
 
 	@Override
-	public Customer authenticate(Customer customer) {
-
-		return customerRepository.authenticate(customer);
-
+	public Customer authenticate(Customer customer) throws UserNotFoundException {
+		try {
+			return customerRepository.authenticate(customer);
+		} catch (DataAccessException e) {
+			UserNotFoundException u = new UserNotFoundException("Customer Not Found");
+			u.initCause(e);
+			throw u;
+		}
 	}
 
 	@Override

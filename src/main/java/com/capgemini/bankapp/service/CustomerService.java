@@ -1,9 +1,10 @@
 package com.capgemini.bankapp.service;
 
 import com.capgemini.bankapp.entities.Customer;
+import com.capgemini.bankapp.exceptions.UserNotFoundException;
 
 public interface CustomerService {
-	public Customer authenticate(Customer customer);
+	public Customer authenticate(Customer customer) throws UserNotFoundException;
 
 	public Customer updateProfile(Customer customer);
 
