@@ -11,11 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.capgemini.bankapp.entities.Customer;
 import com.capgemini.bankapp.service.CustomerService;
 
 @Controller
+@SessionAttributes("customer")
 public class CustomerController {
 
 	@Autowired
